@@ -5,11 +5,11 @@
   "version": "1.0.0",
   "capabilities": {
     "a2a": {
-      "endpoint": "https://8004-demo-agent.example.com/a2a",
+      "endpoint": "https://erc-8004-demo-agent.onrender.com/a2a",
       "methods": ["message/send", "tasks/get", "tasks/cancel"]
     },
     "mcp": {
-      "endpoint": "https://8004-demo-agent.example.com/mcp"
+      "endpoint": "https://erc-8004-demo-agent.onrender.com/mcp"
     }
   },
   "contact": {

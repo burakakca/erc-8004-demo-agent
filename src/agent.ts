@@ -22,7 +22,7 @@ const openai = new OpenAI({
   baseURL: 'https://openrouter.ai/api/v1',
   apiKey: process.env.OPENROUTER_API_KEY,
   defaultHeaders: {
-    'HTTP-Referer': 'https://8004-demo-agent.example.com', // Optional, for including your app on openrouter.ai rankings.
+    'HTTP-Referer': 'https://erc-8004-demo-agent.onrender.com', // Optional, for including your app on openrouter.ai rankings.
     'X-Title': 'Jokester-8004', // Optional. Shows in rankings on openrouter.ai.
   },
 });
