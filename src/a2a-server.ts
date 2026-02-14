@@ -17,9 +17,12 @@
 import 'dotenv/config';
 import express, { Request, Response } from 'express';
 import { v4 as uuidv4 } from 'uuid';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { streamResponse, type AgentMessage } from './agent.js';
 
-
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 app.use(express.json());
 
@@ -54,9 +57,19 @@ const conversationHistory = new Map<string, AgentMessage[]>();
  * Agent Card endpoint - required for A2A discovery
  * Other agents use this to learn about your agent's capabilities
  */
-app.get('/.well-known/agent-card.json', async (_req: Request, res: Response) => {
-  const agentCard = await import('../.well-known/agent-card.json', { assert: { type: 'json' } });
-  res.json(agentCard.default);
+app.get('/.well-known/agent-card.json', (req: Request, res: Response) => {
+  const cardPath = path.resolve(__dirname, '../.well-known/agent-card.json');
+  
+  try {
+    if (fs.existsSync(cardPath)) {
+      const cardData = fs.readFileSync(cardPath, 'utf8');
+      res.json(JSON.parse(cardData));
+    } else {
+      res.status(404).json({ error: 'Agent card not found on disk' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to read agent card' });
+  }
 });
 
 /**
