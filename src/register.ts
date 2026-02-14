@@ -23,8 +23,8 @@ import { SDK } from 'agent0-sdk';
 // ============================================================================
 
 const AGENT_CONFIG = {
-  name: '8004-demo-agent',
-  description: ' a demo agent to showcase 8004 registration best practices',
+  name: 'Jokester-8004',
+  description: 'A joke agent that makes jokes within any given topic.',
   image: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Ethereum_Logo.png',
   // Update these URLs when you deploy your agent
   a2aEndpoint: 'https://8004-demo-agent.example.com/.well-known/agent-card.json',
@@ -85,8 +85,8 @@ async function main() {
 
   // Optional: Add OASF skills and domains for better discoverability
   // Browse taxonomy: https://github.com/agntcy/oasf
-  // agent.addSkill('natural_language_processing/natural_language_generation/summarization');
-  // agent.addDomain('technology/software_engineering');
+  agent.addSkill('natural_language_generation/story_generation');
+  agent.addDomain('arts_and_entertainment');
 
   // Register on-chain with IPFS
   console.log('⛓️  Registering agent on Ethereum Sepolia...');
@@ -97,17 +97,19 @@ async function main() {
   console.log('');
 
   const result = await agent.registerIPFS();
+  console.log('DEBUG: Full result object:', JSON.stringify(result, null, 2));
 
   // Output results
   console.log('');
-  console.log('✅ Agent registered successfully!');
+  console.log('✅ Agent registration transaction submitted successfully!');
   console.log('');
-  console.log('🆔 Agent ID:', result.agentId);
-  console.log('📄 Agent URI:', result.agentURI);
+  
+  const txHash = result.hash;
+  console.log('🔗 Transaction Hash:', txHash);
+  console.log(`   https://sepolia.etherscan.io/tx/${txHash}`);
   console.log('');
-   console.log('🌐 View your agent on 8004scan:');
-   const agentIdNum = result.agentId?.split(':')[1] || result.agentId;
-   console.log(`   https://www.8004scan.io/agents/sepolia/${agentIdNum}`);
+  console.log('ℹ️  Wait for the transaction to confirm on-chain.');
+  console.log('    Once confirmed, check the "Logs" tab on Etherscan to find your Agent ID.');
   console.log('');
   console.log('📋 Next steps:');
   console.log('   1. Update AGENT_CONFIG endpoints with your production URLs');

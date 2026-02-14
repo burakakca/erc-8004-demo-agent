@@ -1,0 +1,18 @@
+{
+  "name": "Jokester-8004",
+  "description": "A joke agent that makes jokes within any given topic.",
+  "image": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Ethereum_Logo.png",
+  "version": "1.0.0",
+  "capabilities": {
+    "a2a": {
+      "endpoint": "https://8004-demo-agent.example.com/a2a",
+      "methods": ["message/send", "tasks/get", "tasks/cancel"]
+    },
+    "mcp": {
+      "endpoint": "https://8004-demo-agent.example.com/mcp"
+    }
+  },
+  "contact": {
+    "wallet": "0xC0bba073f6F0de11154F56826a880252A5e3bB9f"
+  }
+}

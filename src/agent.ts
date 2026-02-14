@@ -19,7 +19,12 @@ import OpenAI from 'openai';
 // Initialize OpenAI client
 // API key is loaded from OPENAI_API_KEY environment variable
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  baseURL: 'https://openrouter.ai/api/v1',
+  apiKey: process.env.OPENROUTER_API_KEY,
+  defaultHeaders: {
+    'HTTP-Referer': 'https://8004-demo-agent.example.com', // Optional, for including your app on openrouter.ai rankings.
+    'X-Title': 'Jokester-8004', // Optional. Shows in rankings on openrouter.ai.
+  },
 });
 
 // ============================================================================
@@ -44,7 +49,7 @@ export interface AgentMessage {
  */
 export async function chat(messages: AgentMessage[]): Promise<string> {
   const response = await openai.chat.completions.create({
-    model: 'gpt-4o-mini', // Change model here if needed
+    model: 'openai/gpt-4o-mini', // OpenRouter model ID
     messages: messages.map((m) => ({ role: m.role, content: m.content })),
     // Add more options as needed:
     // temperature: 0.7,
@@ -67,7 +72,7 @@ export async function generateResponse(userMessage: string, history: AgentMessag
   // Customize this to match your agent's purpose
   const systemPrompt: AgentMessage = {
     role: 'system',
-    content: 'You are a helpful AI assistant registered on the ERC-8004 protocol. Be concise and helpful.',
+    content: 'You are a comedian agent. Your goal is to tell jokes about any topic provided by the user.',
   };
 
   // Build the full message array: system prompt + history + new message
@@ -91,7 +96,7 @@ export async function generateResponse(userMessage: string, history: AgentMessag
 export async function* streamResponse(userMessage: string, history: AgentMessage[] = []): AsyncGenerator<string> {
   const systemPrompt: AgentMessage = {
     role: 'system',
-    content: 'You are a helpful AI assistant registered on the ERC-8004 protocol. Be concise and helpful.',
+    content: 'You are a comedian agent. Your goal is to tell jokes about any topic provided by the user.',
   };
 
   const messages: AgentMessage[] = [
@@ -101,7 +106,7 @@ export async function* streamResponse(userMessage: string, history: AgentMessage
   ];
 
   const stream = await openai.chat.completions.create({
-    model: 'gpt-4o-mini',
+    model: 'openai/gpt-4o-mini', // OpenRouter model ID
     messages: messages.map((m) => ({ role: m.role, content: m.content })),
     stream: true,
   });
